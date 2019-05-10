@@ -59,7 +59,7 @@ def get_level(level):
 
 	level_image = Image.open(image_path)
 	draw = ImageDraw.Draw(level_image)
-	font = ImageFont.truetype('arial.ttf', 24)
+	font = ImageFont.truetype('fonts/arial.ttf', 24)
 	draw.text((51 + offset, 93), "%d" % level, (255, 255, 255), font=font)
 	return level_image
 
@@ -91,7 +91,7 @@ def get_zetas(zetas):
 
 	zeta_image = Image.open(image_path)
 	draw = ImageDraw.Draw(zeta_image)
-	font = ImageFont.truetype('arial.ttf', 16)
+	font = ImageFont.truetype('fonts/arial.ttf', 16)
 	draw.text((27, 18), '%d' % zetas, (255, 255, 255), font=font)
 	return zeta_image
 
@@ -153,7 +153,7 @@ def stats(request, portrait, ally_code):
 	full_image.paste(avatar, (10, 10), avatar)
 
 	draw = ImageDraw.Draw(full_image)
-	font = ImageFont.truetype('arial.ttf', 16)
+	font = ImageFont.truetype('fonts/arial.ttf', 16)
 
 	x = 150
 	y = 20
