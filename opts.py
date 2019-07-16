@@ -340,17 +340,23 @@ def parse_opts_unit_names_v1(config, args, combat_type=1):
 def parse_opts_char_filters(args):
 
 	selected_char_filters = {
-		'gp':     1,
-		'gear':   1,
-		'level':  1,
-		'rarity': 1,
+		'gp':      1,
+		'gear':    1,
+		'level':   1,
+		'rarity':  1,
+		'speed':   1,
+		'pdamage': 1,
+		'sdamage': 1,
 	}
 
 	rules = {
-		'gp':     r'^(gp)([0-9]+)$',
-		'gear':   r'^(g|gear[s]{0,1})([0-9]+)$',
-		'level':  r'^(l|level[s]{0,1})([0-9]+)$',
-		'rarity': r'^(s|star[s]{0,1})([0-9]+)$',
+		'gp':      r'^(gp)([0-9]+)$',
+		'gear':    r'^(g|gear[s]{0,1})([0-9]+)$',
+		'level':   r'^(l|level[s]{0,1})([0-9]+)$',
+		'rarity':  r'^(s|star[s]{0,1})([0-9]+)$',
+		'speed':   r'^(sp|speed[s]{0,1})([0-9]+)$',
+		'pdamage': r'^(pd|pdamage[s]{0,1})([0-9]+)$',
+		'sdamage': r'^(sd|sdamage[s]{0,1})([0-9]+)$',
 	}
 
 	args_cpy = list(args)

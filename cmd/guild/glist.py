@@ -2,7 +2,7 @@ from opts import *
 from errors import *
 
 from utils import get_star
-from swgohhelp import fetch_players, fetch_guilds
+from swgohhelp import fetch_guilds, fetch_crinolo_stats
 
 help_guild_list = {
 	'title': 'Guild List Help',
@@ -27,7 +27,7 @@ Search your guild to see who's having Jedi Knight Revan with GP greater than 230
 %prefixglist jkr gp23000```"""
 }
 
-def unit_is_matching(unit, char_filters):
+def unit_is_matching(unit, stats, char_filters):
 
 	if unit['gp'] < char_filters['gp']:
 		return False
@@ -39,6 +39,18 @@ def unit_is_matching(unit, char_filters):
 		return False
 
 	if unit['rarity'] < char_filters['rarity']:
+		return False
+
+	base_id = unit['defId']
+	unit_stats = stats[base_id]['stats']['final']
+
+	if unit_stats['Speed'] < char_filters['speed']:
+		return False
+
+	if unit_stats['Physical Damage'] < char_filters['pdamage']:
+		return False
+
+	if unit_stats['Special Damage'] < char_filters['sdamage']:
 		return False
 
 	return True
@@ -84,22 +96,10 @@ def cmd_guild_list(config, author, channel, args):
 
 	images = {}
 	matches = {}
-	players = fetch_players(config, {
-		'allycodes': ally_codes,
-		'project': {
-			'name': 1,
-			'allyCode': 1,
-			'guildName': 1,
-			'roster': {
-				'defId': 1,
-				'gp': 1,
-				'gear': 1,
-				'level': 1,
-				'rarity': 1,
-			},
-		},
-	})
+	stats, players = fetch_crinolo_stats(config, ally_codes)
 
+	import json
+	print(json.dumps(stats, indent=4))
 	for ally_code, player in players.items():
 		guild_name = player['guildName']
 		player_name = player['name']
@@ -117,7 +117,7 @@ def cmd_guild_list(config, author, channel, args):
 				continue
 
 			unit = player['roster'][base_id]
-			if not unit_is_matching(unit, selected_char_filters):
+			if not unit_is_matching(unit, stats[ally_code], selected_char_filters):
 				#print('Unit does not match criteria for: %s' % player_name)
 				continue
 
@@ -127,6 +127,9 @@ def cmd_guild_list(config, author, channel, args):
 				'gear':    unit['gear'],
 				'level':   unit['level'],
 				'rarity':  unit['rarity'],
+				'speed':   unit['stats']['final']['Speed'],
+				'pdamage': unit['stats']['final']['Physical Damage'],
+				'sdamage': unit['stats']['final']['Special Damage'],
 				'base_id': ref_unit.base_id,
 			}
 
@@ -151,14 +154,14 @@ def cmd_guild_list(config, author, channel, args):
 			lines = []
 			lines.append(config['separator'])
 			#lines.append('`|%s| GP\u00a0 |Lv|GL|Player`' % get_star())
-			lines.append('`|%s| GP\u00a0 |Lv|GL|Player`' % '*')
+			lines.append('`|%s| GP\u00a0 |Lv|GL|Spd|Player`' % '*')
 
 			rosters = sorted(player_names.items(), key=lambda x: x[1]['gp'], reverse=True)
 			for player_name, unit in rosters:
 				pad_gp = (5 - len(str(unit['gp']))) * '\u00a0'
 				pad_gear = (2 - len(str(unit['gear']))) * '\u00a0'
 				pad_level = (2 - len(str(unit['level']))) * '\u00a0'
-				lines.append('`|%s|%s%d|%s%d|%s%d|`**`%s`**' % (unit['rarity'], pad_gp, unit['gp'], pad_level, unit['level'], pad_gear, unit['gear'], player_name))
+				lines.append('`|%s|%s%d|%s%d|%s%d|%s|`**`%s`**' % (unit['rarity'], pad_gp, unit['gp'], pad_level, unit['level'], pad_gear, unit['gear'], unit['stats']['final']['Speed'], player_name))
 
 			if not len(rosters):
 				lines.append('No player found with characters matching your search criteria.')

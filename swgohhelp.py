@@ -198,6 +198,16 @@ def fetch_crinolo_stats(config, project):
 	stats = api_crinolo(config, players)
 
 	result = {}
+	for player in players:
+
+		if 'roster' in player:
+			player['roster'] = get_units_dict(player['roster'], 'defId')
+
+		ally_code = player['allyCode']
+		result[ally_code] = player
+	players = result
+
+	result = {}
 	for player in stats:
 		ally_code = player['allyCode']
 		result[ally_code] = {}
@@ -205,8 +215,9 @@ def fetch_crinolo_stats(config, project):
 			base_id = unit['defId']
 			if base_id not in result[ally_code]:
 				result[ally_code][base_id] = unit
+	stats = result
 
-	return result, players
+	return stats, players
 #
 # Localized functions
 #
