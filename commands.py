@@ -28,6 +28,7 @@ from cmd.player.needed import *
 from cmd.player.recos import *
 #from cmd.player.stats import *
 from cmd.player.wntm import *
+from cmd.player.zeta import *
 
 COMMANDS = [
 	{
@@ -215,5 +216,11 @@ COMMANDS = [
 		'aliases': [ 'w', 'wntm' ],
 		'function': cmd_wntm,
 		'help': help_wntm,
+	},
+	{
+		'command': 'zeta',
+		'aliases': [ 'z', 'zeta', 'zetas' ],
+		'function': cmd_zeta,
+		'help': help_zeta,
 	},
 ]
