@@ -58,7 +58,7 @@ def get_full_avatar_url(config, image, unit):
 		zetas  = 'zetas'  in unit and len(unit['zetas']) or 0
 		if zetas == 0:
 			zetas = count_zetas(unit)
-		relics = 'relics' in unit and unit['relic']['currentTier'] or 0
+		relics = 'relic' in unit and unit['relic']['currentTier'] or 0
 		relics = max(0, relics - 2)
 
 	return 'http://%s/avatar/%s?level=%s&gear=%s&rarity=%s&zetas=%s&relics=%s&alignment=%s&version=3' % (config['server'], image, level, gear, rarity, zetas, relics, alignment)
