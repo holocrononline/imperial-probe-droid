@@ -40,17 +40,12 @@ def get_portrait(character):
 def get_gear(gear, alignment):
 
 	if gear < 13:
-		image_name = 'ui/gear-icon-g%d.svg' % gear
+		image_name = 'gear-%d.png' % gear
 	else:
-		image_name = 'gear%d-%s-side.png' % (gear, alignment)
+		image_name = 'gear-%d-%s-side.png' % (gear, alignment)
 
 	image_path = download_image(image_name)
-	image_png = image_path.replace('.svg', '.png')
-
-	if not os.path.exists(image_png) or os.path.getsize(image_png) == 0:
-		svg2png(url=image_path, write_to=image_png, parent_width=128, parent_height=128)
-
-	return Image.open(image_png)
+	return Image.open(image_path)
 
 def get_level(level):
 
