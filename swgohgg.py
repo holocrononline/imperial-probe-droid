@@ -50,6 +50,8 @@ def get_full_avatar_url(config, image, unit):
 	level, gear, rarity, zetas, relics = 1, 1, 0, 0, 0
 
 	if unit is not None:
+		import json
+		print(json.dumps(unit, indent=4))
 		level  = 'level'  in unit and unit['level']      or 1
 		gear   = 'gear'   in unit and unit['gear']       or 1
 		rarity = 'rarity' in unit and unit['rarity']     or 0
