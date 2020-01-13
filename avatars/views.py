@@ -141,7 +141,7 @@ def get_avatar(request, portrait):
 	if gear < 13:
 		portrait_image.paste(gear_image, (0, 0), gear_image)
 	else:
-		portrait_image.paste(gear_image, (-10, -10), gear_image)
+		portrait_image.paste(gear_image, (-15, -11), gear_image)
 
 	portrait_image = format_image(portrait_image, 128)
 
