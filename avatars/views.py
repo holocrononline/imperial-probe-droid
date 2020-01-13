@@ -42,7 +42,7 @@ def get_gear(gear, side):
 	if gear < 13:
 		image_name = 'ui/gear-icon-g%d.svg' % gear
 	else:
-		image_name = 'ui/gear%d-%s-side.png' % (gear, side)
+		image_name = 'gear%d-%s-side.png' % (gear, side)
 
 	image_path = download_image(image_name)
 	image_png = image_path.replace('.svg', '.png')
