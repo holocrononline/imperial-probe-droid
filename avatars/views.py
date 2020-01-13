@@ -8,7 +8,7 @@ from cairosvg import svg2png
 
 import io, os, requests
 
-SIDES = {
+ALIGNMENTS = {
 	'dark': True,
 	'light': True,
 	'neutral': True,
@@ -37,12 +37,12 @@ def download_image(image_name):
 def get_portrait(character):
 	return Image.open(download_image(character))
 
-def get_gear(gear, side):
+def get_gear(gear, alignment):
 
 	if gear < 13:
 		image_name = 'ui/gear-icon-g%d.svg' % gear
 	else:
-		image_name = 'gear%d-%s-side.png' % (gear, side)
+		image_name = 'gear%d-%s-side.png' % (gear, alignment)
 
 	image_path = download_image(image_name)
 	image_png = image_path.replace('.svg', '.png')
@@ -99,9 +99,9 @@ def get_zetas(zetas):
 	draw.text((27, 18), '%d' % zetas, (255, 255, 255), font=font)
 	return zeta_image
 
-def get_relics(relics, side):
+def get_relics(relics, alignment):
 
-	image_name = 'relic-%s-side.png' % side
+	image_name = 'relic-%s-side.png' % alignment
 	image_path = download_image(image_name)
 
 	relic_image = Image.open(image_path)
@@ -129,7 +129,7 @@ def img2png(image):
 
 def get_avatar(request, portrait):
 
-	side  = 'side' in request.GET and request.GET['side'] and request.GET['side'].lower() in SIDES and request.GET['side'].lower() or 'neutral'
+	alignment  = 'alignment' in request.GET and request.GET['alignment'] and request.GET['alignment'].lower() in ALIGNMENTS and request.GET['alignment'].lower() or 'neutral'
 	level = 'level' in request.GET and int(request.GET['level']) or 1
 	gear = 'gear' in request.GET and int(request.GET['gear']) or 1
 	rarity = 'rarity' in request.GET and int(request.GET['rarity']) or 0
@@ -138,10 +138,10 @@ def get_avatar(request, portrait):
 
 	portrait_image = get_portrait(portrait)
 	level_image = get_level(level)
-	gear_image = get_gear(gear, side)
+	gear_image = get_gear(gear, alignment)
 	rarity_image = get_rarity(rarity)
 	zeta_image = get_zetas(zetas)
-	relic_image = get_relics(relics, side)
+	relic_image = get_relics(relics, alignment)
 
 	portrait_image.paste(gear_image, (0, 0), gear_image)
 	portrait_image = format_image(portrait_image, 128)
