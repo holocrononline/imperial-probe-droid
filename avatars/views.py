@@ -138,7 +138,11 @@ def get_avatar(request, portrait):
 	zeta_image = get_zetas(zetas)
 	relic_image = get_relics(relics, alignment)
 
-	portrait_image.paste(gear_image, (0, 0), gear_image)
+	if gear < 13:
+		portrait_image.paste(gear_image, (0, 0), gear_image)
+	else:
+		portrait_image.paste(gear_image, (-10, -10), gear_image)
+
 	portrait_image = format_image(portrait_image, 128)
 
 	full_image = Image.new('RGBA', (138, 138), 0)
