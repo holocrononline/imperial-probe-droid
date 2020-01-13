@@ -154,7 +154,7 @@ def get_avatar(request, portrait):
 	if zetas > 0:
 		full_image.paste(zeta_image, (-8, 63), zeta_image)
 	if relics > 0:
-		full_image.paste(relic_image, (-100, 63), relic_image)
+		full_image.paste(relic_image, (-8, 63), relic_image)
 	full_image.paste(level_image, (5, 10), level_image)
 	full_image.paste(rarity_image, (0, 0), rarity_image)
 
